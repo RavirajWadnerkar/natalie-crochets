@@ -7,6 +7,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
+// Make sure this is your actual publishable key
 const stripePromise = loadStripe("pk_test_51OxySpE0r1bS9AxzCjQaDEE36Xi0VOdKhSqy1J8Wj4w0DFVFpvpIV9Kn4Pgb2yPl5ZjsVwDjxXatcbKD5hZrfZ8M00k0fC8rKF");
 
 const Cart = () => {
@@ -20,11 +21,30 @@ const Cart = () => {
       const stripe = await stripePromise;
       if (!stripe) throw new Error("Stripe failed to initialize.");
 
+      // Format the items for the checkout session
+      const lineItems = state.items.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        image: item.image,
+      }));
+
+      console.log('Sending items to checkout:', lineItems);
+
       const { data, error } = await supabase.functions.invoke('create-checkout-session', {
-        body: { items: state.items }
+        body: { items: lineItems }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase function error:', error);
+        throw error;
+      }
+
+      if (!data?.session_id) {
+        throw new Error('No session ID received from the server');
+      }
+
+      console.log('Received session ID:', data.session_id);
 
       const result = await stripe.redirectToCheckout({
         sessionId: data.session_id,

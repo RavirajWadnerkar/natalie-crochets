@@ -1,7 +1,8 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Menu, X, User } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
+import Cart from "./Cart";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,14 +39,9 @@ const Navbar = () => {
 
           {/* Icons */}
           <div className="hidden md:flex md:items-center md:space-x-4">
+            <Cart />
             <Link
-              to="/cart"
-              className="p-2 text-gray-600 hover:text-primary-dark transition-colors duration-200"
-            >
-              <ShoppingCart className="h-6 w-6" />
-            </Link>
-            <Link
-              to="/login"
+              to="/auth"
               className="p-2 text-gray-600 hover:text-primary-dark transition-colors duration-200"
             >
               <User className="h-6 w-6" />
@@ -79,14 +75,7 @@ const Navbar = () => {
               </Link>
             ))}
             <Link
-              to="/cart"
-              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-dark hover:bg-gray-50"
-              onClick={() => setIsOpen(false)}
-            >
-              Cart
-            </Link>
-            <Link
-              to="/login"
+              to="/auth"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-dark hover:bg-gray-50"
               onClick={() => setIsOpen(false)}
             >

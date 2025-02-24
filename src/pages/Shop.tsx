@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/Navbar";
 
 interface Product {
@@ -16,6 +17,7 @@ interface Product {
 
 const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,6 +35,15 @@ const Shop = () => {
 
     fetchProducts();
   }, []);
+
+  const handleAddToCart = (product: Product) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -57,7 +68,12 @@ const Shop = () => {
                 <p className="text-lg font-semibold mt-2">${product.price}</p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full">Add to Cart</Button>
+                <Button 
+                  className="w-full"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Add to Cart
+                </Button>
               </CardFooter>
             </Card>
           ))}

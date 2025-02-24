@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, MapPin, MessageSquare, Phone, Pinterest, TrendingUp } from "lucide-react";
+import { Facebook, Instagram, MapPin, MessageSquare, Phone, TrendingUp } from "lucide-react";
 
 const Footer = () => {
   return (
@@ -48,10 +48,7 @@ const Footer = () => {
                 <Facebook className="h-6 w-6" />
               </a>
               <a href="#" className="hover:text-primary transition-colors">
-                <Pinterest className="h-6 w-6" />
-              </a>
-              <a href="#" className="hover:text-primary transition-colors">
-                <TrendingUp className="h-6 w-6" title="TikTok" />
+                <TrendingUp className="h-6 w-6" aria-label="TikTok" />
               </a>
             </div>
           </div>

@@ -57,11 +57,30 @@ const ReviewCarousel = () => {
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
 
   const nextPage = () => {
-    setCurrentPage((prev) => (prev + 1) % totalPages);
+    setCurrentPage((prev) => {
+      const newPage = (prev + 1) % totalPages;
+      scrollToReview(newPage);
+      return newPage;
+    });
   };
 
   const prevPage = () => {
-    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+    setCurrentPage((prev) => {
+      const newPage = (prev - 1 + totalPages) % totalPages;
+      scrollToReview(newPage);
+      return newPage;
+    });
+  };
+
+  const scrollToReview = (page: number) => {
+    const element = document.getElementById(`review-page-${page}`);
+    if (element) {
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "start"
+      });
+    }
   };
 
   const currentReviews = reviews.slice(
@@ -75,8 +94,11 @@ const ReviewCarousel = () => {
         <h2 className="text-4xl font-script text-center text-primary-dark mb-12">
           Customer Reviews
         </h2>
-        <div className="relative">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="relative overflow-hidden">
+          <div 
+            id={`review-page-${currentPage}`}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8 transition-transform duration-500 ease-in-out"
+          >
             {currentReviews.map((review) => (
               <div
                 key={review.id}

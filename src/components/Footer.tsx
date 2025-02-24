@@ -12,7 +12,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
-                <a href="mailto:hello@crochetshop.com">hello@crochetshop.com</a>
+                <a href="mailto:ravirajtushar.wadnerkar@sjsu.edu">ravirajtushar.wadnerkar@sjsu.edu</a>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
@@ -41,13 +41,13 @@ const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
             <div className="flex gap-4">
-              <a href="#" className="hover:text-primary transition-colors">
+              <a href="https://instagram.com/nataliecrochets" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 <Instagram className="h-6 w-6" />
               </a>
-              <a href="#" className="hover:text-primary transition-colors">
+              <a href="https://facebook.com/nataliecrochets" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 <Facebook className="h-6 w-6" />
               </a>
-              <a href="#" className="hover:text-primary transition-colors">
+              <a href="https://tiktok.com/@nataliecrochets" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
                 <TrendingUp className="h-6 w-6" aria-label="TikTok" />
               </a>
             </div>
@@ -56,7 +56,7 @@ const Footer = () => {
         
         <div className="mt-8 pt-8 border-t border-gray-800">
           <p className="text-center text-gray-400">
-            © {new Date().getFullYear()} Crochet Shop. All rights reserved.
+            © {new Date().getFullYear()} Natalie crochets. All rights reserved.
           </p>
         </div>
       </div>

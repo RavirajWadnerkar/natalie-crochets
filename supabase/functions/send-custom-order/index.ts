@@ -21,7 +21,6 @@ interface CustomOrderRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -37,29 +36,9 @@ const handler = async (req: Request): Promise<Response> => {
       recipientEmail,
     }: CustomOrderRequest = await req.json();
 
-    const emailResponse = await resend.emails.send({
-      from: "Natalie Crochets <onboarding@resend.dev>",
-      to: [recipientEmail],
-      subject: `New Custom Order Request from ${name}`,
-      html: `
-        <h1>New Custom Order Request</h1>
-        <h2>Contact Information:</h2>
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
-        
-        <h2>Order Details:</h2>
-        <p><strong>Item Description:</strong><br>${itemType}</p>
-        <p><strong>Color Preferences:</strong><br>${colors || "Not specified"}</p>
-        <p><strong>Timeline:</strong><br>${timeline || "Not specified"}</p>
-        
-        <p>Please reply to ${email} to discuss this custom order request.</p>
-      `,
-    });
-
-    // Send confirmation email to the customer
+    // First, send confirmation to the customer
     await resend.emails.send({
-      from: "Natalie Crochets <onboarding@resend.dev>",
+      from: "Natalie Crochets <nataliecrochets@resend.dev>",
       to: [email],
       subject: "We've Received Your Custom Order Request",
       html: `
@@ -78,9 +57,28 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Emails sent successfully:", emailResponse);
+    // Then, send notification to the shop owner
+    const ownerEmailResponse = await resend.emails.send({
+      from: "Natalie Crochets <nataliecrochets@resend.dev>",
+      to: [recipientEmail],
+      subject: `New Custom Order Request from ${name}`,
+      html: `
+        <h1>New Custom Order Request</h1>
+        <h2>Contact Information:</h2>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
+        
+        <h2>Order Details:</h2>
+        <p><strong>Item Description:</strong><br>${itemType}</p>
+        <p><strong>Color Preferences:</strong><br>${colors || "Not specified"}</p>
+        <p><strong>Timeline:</strong><br>${timeline || "Not specified"}</p>
+        
+        <p>Please reply to ${email} to discuss this custom order request.</p>
+      `,
+    });
 
-    return new Response(JSON.stringify(emailResponse), {
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
       headers: {
         "Content-Type": "application/json",

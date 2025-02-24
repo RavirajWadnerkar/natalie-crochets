@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
@@ -7,8 +6,8 @@ import { loadStripe } from "@stripe/stripe-js";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-// Make sure this is your actual publishable key
-const stripePromise = loadStripe("pk_test_51OxySpE0r1bS9AxzCjQaDEE36Xi0VOdKhSqy1J8Wj4w0DFVFpvpIV9Kn4Pgb2yPl5ZjsVwDjxXatcbKD5hZrfZ8M00k0fC8rKF");
+// Updated with new publishable key
+const stripePromise = loadStripe("pk_live_51Qvr3DRp21S7mUMfGProFXRVuylcOVfG15HnqW1EJHmS4MmrQ0t817D7EPqdzwa55iRJF8sjQE75EXxA6lql4kE4008jq0xA4g");
 
 const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);

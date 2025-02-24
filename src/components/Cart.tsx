@@ -5,24 +5,29 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, X, Plus, Minus } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
-const stripePromise = loadStripe("your_publishable_key"); // Replace with your Stripe publishable key
+const stripePromise = loadStripe("pk_test_51OxySpE0r1bS9AxzCjQaDEE36Xi0VOdKhSqy1J8Wj4w0DFVFpvpIV9Kn4Pgb2yPl5ZjsVwDjxXatcbKD5hZrfZ8M00k0fC8rKF");
 
 const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { state, removeFromCart, updateQuantity } = useCart();
 
   const handleCheckout = async () => {
+    setIsLoading(true);
     try {
       const stripe = await stripePromise;
       if (!stripe) throw new Error("Stripe failed to initialize.");
 
-      const { data: { session_id } } = await supabase.functions.invoke('create-checkout-session', {
+      const { data, error } = await supabase.functions.invoke('create-checkout-session', {
         body: { items: state.items }
       });
 
+      if (error) throw error;
+
       const result = await stripe.redirectToCheckout({
-        sessionId: session_id,
+        sessionId: data.session_id,
       });
 
       if (result.error) {
@@ -30,6 +35,13 @@ const Cart = () => {
       }
     } catch (error: any) {
       console.error('Error in checkout:', error);
+      toast({
+        title: "Checkout Error",
+        description: error.message || "Something went wrong during checkout.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -125,8 +137,9 @@ const Cart = () => {
                   <Button
                     className="w-full"
                     onClick={handleCheckout}
+                    disabled={isLoading}
                   >
-                    Checkout
+                    {isLoading ? "Processing..." : "Checkout"}
                   </Button>
                 </div>
               </>

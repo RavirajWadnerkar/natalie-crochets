@@ -8,7 +8,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -25,8 +24,6 @@ serve(async (req) => {
       throw new Error('Invalid items data');
     }
 
-    console.log('Processing checkout items:', items);
-
     const lineItems = items.map(item => ({
       price_data: {
         currency: 'usd',
@@ -34,40 +31,36 @@ serve(async (req) => {
           name: item.name,
           images: item.image ? [item.image] : undefined,
         },
-        unit_amount: Math.round(item.price * 100), // Convert to cents
+        unit_amount: Math.round(item.price * 100),
       },
       quantity: item.quantity,
     }));
 
+    console.log('Creating checkout session with items:', lineItems);
+
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
       success_url: `${req.headers.get('origin') || 'http://localhost:5173'}/success`,
       cancel_url: `${req.headers.get('origin') || 'http://localhost:5173'}/cart`,
     });
 
-    console.log('Created checkout session:', session.id);
+    console.log('Created session:', session.id);
 
     return new Response(
       JSON.stringify({ session_id: session.id }),
-      {
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 200,
       }
     );
   } catch (error) {
-    console.error('Stripe checkout error:', error);
+    console.error('Error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      {
-        status: 200, // Changed to 200 to avoid CORS issues
-        headers: { 
-          ...corsHeaders,
-          'Content-Type': 'application/json',
-        },
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        status: 400,
       }
     );
   }

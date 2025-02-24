@@ -1,11 +1,12 @@
 
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const Custom = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 pt-20">
         <h1 className="text-4xl font-script text-primary-dark text-center mb-8">
           Custom Orders
         </h1>
@@ -54,6 +55,7 @@ const Custom = () => {
           </form>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

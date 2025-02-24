@@ -5,6 +5,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/CartContext";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 interface Product {
   id: string;
@@ -48,7 +49,7 @@ const Shop = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 pt-20">
         <h1 className="text-4xl font-script text-primary-dark text-center mb-8">
           Our Collection
         </h1>
@@ -79,6 +80,7 @@ const Shop = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

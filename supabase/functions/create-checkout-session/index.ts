@@ -39,14 +39,12 @@ serve(async (req) => {
       quantity: item.quantity,
     }));
 
-    const origin = req.headers.get('origin') || 'http://localhost:5173';
-    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
-      success_url: `${origin}/shop?success=true`,
-      cancel_url: `${origin}/shop?canceled=true`,
+      success_url: `${req.headers.get('origin') || 'http://localhost:5173'}/success`,
+      cancel_url: `${req.headers.get('origin') || 'http://localhost:5173'}/cart`,
     });
 
     console.log('Created checkout session:', session.id);
@@ -63,11 +61,9 @@ serve(async (req) => {
   } catch (error) {
     console.error('Stripe checkout error:', error);
     return new Response(
-      JSON.stringify({ 
-        error: error instanceof Error ? error.message : 'Unknown error occurred' 
-      }),
+      JSON.stringify({ error: error.message }),
       {
-        status: 400,
+        status: 200, // Changed to 200 to avoid CORS issues
         headers: { 
           ...corsHeaders,
           'Content-Type': 'application/json',

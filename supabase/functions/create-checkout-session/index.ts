@@ -1,6 +1,6 @@
 
-import { serve } from 'https://deno.fresh.dev/server.ts';
-import Stripe from 'https://esm.sh/stripe@14.21.0';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import Stripe from "https://esm.sh/stripe@14.21.0";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -20,6 +20,7 @@ serve(async (req) => {
     });
 
     const { items } = await req.json();
+    console.log('Received items:', items);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -39,6 +40,8 @@ serve(async (req) => {
       cancel_url: `${req.headers.get('origin')}/shop`,
     });
 
+    console.log('Created session:', session.id);
+
     return new Response(
       JSON.stringify({ session_id: session.id }),
       {
@@ -46,7 +49,7 @@ serve(async (req) => {
       }
     );
   } catch (error) {
-    console.error('Error:', error);
+    console.error('Error in checkout:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       {

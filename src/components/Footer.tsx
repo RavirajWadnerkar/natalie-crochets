@@ -12,7 +12,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
-                <a href="mailto:ravirajtushar.wadnerkar@sjsu.edu">ravirajtushar.wadnerkar@sjsu.edu</a>
+                <a href="mailto:hello@crochetshop.com">hello@crochetshop.com</a>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4" />
@@ -21,8 +21,7 @@ const Footer = () => {
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4" />
                 <address className="not-italic">
-                  431 El Camino Real<br />
-                  Santa Clara, CA 95050<br />
+                  San Jose, CA 95192<br />
                   USA
                 </address>
               </li>

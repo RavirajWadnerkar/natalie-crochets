@@ -37,7 +37,7 @@ const Navbar = () => {
           </div>
 
           {/* Icons */}
-          <div className="hidden md:flex md:items-center md:space-x-4">
+          <div className="flex md:flex md:items-center md:space-x-4">
             <Cart />
             <Link
               to="/auth"
@@ -45,16 +45,16 @@ const Navbar = () => {
             >
               <User className="h-6 w-6" />
             </Link>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"
-            >
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            
+            {/* Mobile menu button */}
+            <div className="md:hidden ml-1">
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none"
+              >
+                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
       </div>

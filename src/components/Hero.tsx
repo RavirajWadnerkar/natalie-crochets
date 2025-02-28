@@ -9,7 +9,7 @@ import Footer from "./Footer";
 const Hero = () => {
   return (
     <div className="min-h-screen">
-      <div className="relative min-h-[70vh] flex items-center justify-center bg-accent/30">
+      <div className="relative min-h-[80vh] flex items-center justify-center bg-accent/30 pt-20">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-white/60 to-transparent" />
         </div>

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
@@ -53,40 +53,49 @@ const reviews = [
 
 const ReviewCarousel = () => {
   const [currentPage, setCurrentPage] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const reviewsPerPage = 3;
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
 
+  useEffect(() => {
+    const autoScroll = setInterval(() => {
+      if (!isAnimating) {
+        nextPage();
+      }
+    }, 5000);
+    
+    return () => clearInterval(autoScroll);
+  }, [isAnimating]);
+
   const nextPage = () => {
-    setCurrentPage((prev) => {
-      const newPage = (prev + 1) % totalPages;
-      scrollToReview(newPage);
-      return newPage;
-    });
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+    
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 700);
   };
 
   const prevPage = () => {
-    setCurrentPage((prev) => {
-      const newPage = (prev - 1 + totalPages) % totalPages;
-      scrollToReview(newPage);
-      return newPage;
-    });
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
+    
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 700);
   };
 
-  const scrollToReview = (page: number) => {
-    const element = document.getElementById(`review-page-${page}`);
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-        inline: "start"
-      });
-    }
+  const getCurrentReviews = () => {
+    return reviews.slice(
+      currentPage * reviewsPerPage,
+      (currentPage + 1) * reviewsPerPage
+    );
   };
-
-  const currentReviews = reviews.slice(
-    currentPage * reviewsPerPage,
-    (currentPage + 1) * reviewsPerPage
-  );
 
   return (
     <section className="py-16 bg-accent/30">
@@ -96,33 +105,54 @@ const ReviewCarousel = () => {
         </h2>
         <div className="relative overflow-hidden">
           <div 
-            id={`review-page-${currentPage}`}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 transition-transform duration-500 ease-in-out"
+            ref={carouselRef}
+            className="relative"
           >
-            {currentReviews.map((review) => (
-              <div
-                key={review.id}
-                className="bg-white p-6 rounded-lg shadow-md"
-              >
-                <p className="text-gray-600 italic mb-4">"{review.text}"</p>
-                <p className="text-primary-dark font-semibold">- {review.author}</p>
-              </div>
-            ))}
+            <div 
+              className="grid grid-cols-1 md:grid-cols-3 gap-8 transition-all duration-700 ease-in-out"
+              style={{ 
+                opacity: isAnimating ? 0.6 : 1,
+                transform: isAnimating ? 'scale(0.98)' : 'scale(1)'
+              }}
+            >
+              {getCurrentReviews().map((review) => (
+                <div
+                  key={review.id}
+                  className="bg-white p-6 rounded-lg shadow-md h-full flex flex-col"
+                >
+                  <p className="text-gray-600 italic mb-4 flex-grow">"{review.text}"</p>
+                  <p className="text-primary-dark font-semibold">- {review.author}</p>
+                </div>
+              ))}
+            </div>
           </div>
+          
           <div className="flex justify-center mt-8 gap-4">
             <Button
               variant="outline"
               size="icon"
               onClick={prevPage}
-              className="rounded-full"
+              disabled={isAnimating}
+              className="rounded-full hover:bg-primary/20 transition-all"
             >
               <ArrowLeft className="h-4 w-4" />
             </Button>
+            <div className="flex space-x-2 items-center">
+              {Array.from({ length: totalPages }).map((_, index) => (
+                <span 
+                  key={index}
+                  className={`block w-2 h-2 rounded-full transition-all ${
+                    currentPage === index ? 'bg-primary w-4' : 'bg-gray-300'
+                  }`}
+                />
+              ))}
+            </div>
             <Button
               variant="outline"
               size="icon"
               onClick={nextPage}
-              className="rounded-full"
+              disabled={isAnimating}
+              className="rounded-full hover:bg-primary/20 transition-all"
             >
               <ArrowRight className="h-4 w-4" />
             </Button>

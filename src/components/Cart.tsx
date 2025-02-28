@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
@@ -81,7 +82,7 @@ const Cart = () => {
       </Button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg z-50">
+        <div className="fixed sm:absolute right-0 left-0 sm:left-auto mt-2 w-[95%] sm:w-96 bg-white rounded-lg shadow-lg z-50 mx-auto sm:mx-0 max-w-md">
           <div className="p-4">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">Shopping Cart</h3>
@@ -97,7 +98,7 @@ const Cart = () => {
               <p className="text-gray-500 text-center py-4">Your cart is empty</p>
             ) : (
               <>
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   {state.items.map((item) => (
                     <div
                       key={item.id}

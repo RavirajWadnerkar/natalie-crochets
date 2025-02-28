@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, X, Plus, Minus } from "lucide-react";
@@ -14,6 +14,37 @@ const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { state, removeFromCart, updateQuantity } = useCart();
+  const cartRef = useRef<HTMLDivElement>(null);
+
+  // Handle clicks outside the cart to close it
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Prevent body scrolling when cart is open on mobile
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -82,90 +113,99 @@ const Cart = () => {
       </Button>
 
       {isOpen && (
-        <div className="fixed sm:absolute right-0 left-0 sm:left-auto mt-2 w-[95%] sm:w-96 bg-white rounded-lg shadow-lg z-50 mx-auto sm:mx-0 max-w-md">
-          <div className="p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-semibold">Shopping Cart</h3>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="text-gray-400 hover:text-gray-500"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+        <>
+          {/* Mobile overlay */}
+          <div className="fixed inset-0 bg-black/50 z-40 sm:hidden" onClick={() => setIsOpen(false)} />
+          
+          {/* Cart container */}
+          <div 
+            ref={cartRef}
+            className="fixed sm:absolute sm:right-0 inset-x-0 sm:inset-x-auto bottom-0 sm:bottom-auto top-auto sm:top-full mt-0 sm:mt-2 w-full sm:w-96 max-w-full sm:max-w-md bg-white rounded-t-lg sm:rounded-lg shadow-lg z-50 mx-auto"
+          >
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">Shopping Cart</h3>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="text-gray-400 hover:text-gray-500"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
 
-            {state.items.length === 0 ? (
-              <p className="text-gray-500 text-center py-4">Your cart is empty</p>
-            ) : (
-              <>
-                <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-                  {state.items.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex items-center justify-between space-x-4"
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="w-16 h-16 object-cover rounded"
-                      />
-                      <div className="flex-1">
-                        <h4 className="font-medium">{item.name}</h4>
-                        <p className="text-sm text-gray-500">
-                          ${item.price.toFixed(2)}
-                        </p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() =>
-                            updateQuantity(item.id, Math.max(0, item.quantity - 1))
-                          }
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                        <span>{item.quantity}</span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
-                          }
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeFromCart(item.id)}
+              {state.items.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">Your cart is empty</p>
+              ) : (
+                <>
+                  <div className="space-y-4 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto">
+                    {state.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between space-x-4"
                       >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 pt-4 border-t">
-                  <div className="flex justify-between mb-4">
-                    <span className="font-medium">Total:</span>
-                    <span className="font-medium">
-                      ${state.total.toFixed(2)}
-                    </span>
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-medium">{item.name}</h4>
+                          <p className="text-sm text-gray-500">
+                            ${item.price.toFixed(2)}
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() =>
+                              updateQuantity(item.id, Math.max(0, item.quantity - 1))
+                            }
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <span>{item.quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFromCart(item.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
-                  <Button
-                    className="w-full"
-                    onClick={handleCheckout}
-                    disabled={isLoading}
-                  >
-                    {isLoading ? "Processing..." : "Checkout"}
-                  </Button>
-                </div>
-              </>
-            )}
+
+                  <div className="mt-4 pt-4 border-t">
+                    <div className="flex justify-between mb-4">
+                      <span className="font-medium">Total:</span>
+                      <span className="font-medium">
+                        ${state.total.toFixed(2)}
+                      </span>
+                    </div>
+                    <Button
+                      className="w-full"
+                      onClick={handleCheckout}
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Processing..." : "Checkout"}
+                    </Button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

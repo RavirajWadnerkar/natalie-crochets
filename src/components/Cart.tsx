@@ -120,7 +120,7 @@ const Cart = () => {
           {/* Cart container */}
           <div 
             ref={cartRef}
-            className="fixed sm:absolute sm:right-0 inset-x-0 sm:inset-x-auto bottom-0 sm:bottom-auto top-auto sm:top-full mt-0 sm:mt-2 w-full sm:w-96 max-w-full sm:max-w-md bg-white rounded-t-lg sm:rounded-lg shadow-lg z-50 mx-auto"
+            className="fixed sm:absolute sm:right-0 inset-x-0 sm:inset-x-auto top-1/2 sm:top-full left-1/2 sm:left-auto transform -translate-x-1/2 sm:translate-x-0 -translate-y-1/2 sm:translate-y-0 mt-0 sm:mt-2 w-[90%] sm:w-96 max-w-full sm:max-w-md bg-white rounded-lg shadow-lg z-50 max-h-[90vh] overflow-y-auto"
           >
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
@@ -137,7 +137,7 @@ const Cart = () => {
                 <p className="text-gray-500 text-center py-4">Your cart is empty</p>
               ) : (
                 <>
-                  <div className="space-y-4 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto">
+                  <div className="space-y-4 max-h-[50vh] overflow-y-auto">
                     {state.items.map((item) => (
                       <div
                         key={item.id}

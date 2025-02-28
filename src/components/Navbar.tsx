@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Cart from "./Cart";
 
 const Navbar = () => {
@@ -37,14 +37,8 @@ const Navbar = () => {
           </div>
 
           {/* Icons */}
-          <div className="flex items-center md:space-x-4">
+          <div className="flex items-center">
             <Cart />
-            <Link
-              to="/auth"
-              className="p-2 text-gray-600 hover:text-primary-dark transition-colors duration-200"
-            >
-              <User className="h-6 w-6" />
-            </Link>
             
             {/* Mobile menu button */}
             <div className="md:hidden ml-1">

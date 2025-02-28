@@ -5,12 +5,25 @@ import { Button } from "./ui/button";
 const featuredProducts = [
   {
     id: "1",
-    name: "Cozy Winter Blanket",
+    name: "Baby Booties",
+    price: 24.99,
+    image: "/lovable-uploads/d2170950-9a3f-4451-b2d3-6618b40a09d4.png",
+    description: "Adorable booties for your little one"
+  },
+  {
+    id: "2",
+    name: "Winter Blanket",
     price: 129.99,
     image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901",
     description: "Handmade with soft merino wool"
   },
-  // Add more products here
+  {
+    id: "3",
+    name: "Cushion Cover",
+    price: 35.99,
+    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+    description: "Beautiful handcrafted cushion cover"
+  },
 ];
 
 const ProductShowcase = () => {

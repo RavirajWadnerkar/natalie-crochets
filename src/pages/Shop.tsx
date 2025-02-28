@@ -52,7 +52,7 @@ const mockProducts = [
   {
     id: "5",
     name: "Mudkip Toy",
-    description: "Adorable crochet Mudkip plushie",
+    description: "Adorable crochet Mudkip plushie from Pokemon",
     price: 42.99,
     images: ["https://images.unsplash.com/photo-1535759561784-5973ce7be8b9"],
     stock_quantity: 5

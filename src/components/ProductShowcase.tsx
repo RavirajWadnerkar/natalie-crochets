@@ -4,13 +4,6 @@ import { Button } from "./ui/button";
 
 const featuredProducts = [
   {
-    id: "1",
-    name: "Baby Booties",
-    price: 24.99,
-    image: "/lovable-uploads/d2170950-9a3f-4451-b2d3-6618b40a09d4.png",
-    description: "Adorable booties for your little one"
-  },
-  {
     id: "2",
     name: "Winter Blanket",
     price: 129.99,
@@ -18,11 +11,18 @@ const featuredProducts = [
     description: "Handmade with soft merino wool"
   },
   {
-    id: "3",
-    name: "Cushion Cover",
-    price: 35.99,
-    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
-    description: "Beautiful handcrafted cushion cover"
+    id: "4",
+    name: "Flower Pot Holder",
+    price: 19.99,
+    image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a",
+    description: "Decorative crochet pot holder"
+  },
+  {
+    id: "5",
+    name: "Mudkip Toy",
+    price: 42.99,
+    image: "https://images.unsplash.com/photo-1535759561784-5973ce7be8b9",
+    description: "Adorable crochet Mudkip plushie"
   },
 ];
 

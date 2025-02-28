@@ -115,15 +115,16 @@ const Cart = () => {
       {isOpen && (
         <>
           {/* Mobile overlay */}
-          <div className="fixed inset-0 bg-black/50 z-40 sm:hidden" onClick={() => setIsOpen(false)} />
+          <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setIsOpen(false)} />
           
           {/* Cart container */}
           <div 
             ref={cartRef}
-            className="fixed sm:absolute sm:right-0 inset-x-0 sm:inset-x-auto top-0 sm:top-full h-full sm:h-auto w-full sm:w-96 max-w-full sm:max-w-md bg-white z-50 sm:mt-2 sm:rounded-lg overflow-hidden"
+            className="fixed inset-x-0 bottom-0 top-auto sm:absolute sm:right-0 sm:left-auto sm:top-full sm:bottom-auto w-full sm:w-96 max-w-full sm:max-w-md bg-white rounded-t-lg sm:rounded-lg shadow-lg z-50 mx-auto sm:mr-0 sm:mt-2"
+            style={{ maxHeight: '80vh', overflowY: 'auto' }}
           >
-            <div className="p-4 h-full flex flex-col">
-              <div className="flex justify-between items-center mb-4">
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4 sticky top-0 bg-white pt-2">
                 <h3 className="text-lg font-semibold">Shopping Cart</h3>
                 <button
                   onClick={() => setIsOpen(false)}
@@ -137,58 +138,56 @@ const Cart = () => {
                 <p className="text-gray-500 text-center py-4">Your cart is empty</p>
               ) : (
                 <>
-                  <div className="flex-1 overflow-y-auto mb-4">
-                    <div className="space-y-4">
-                      {state.items.map((item) => (
-                        <div
-                          key={item.id}
-                          className="flex items-center justify-between space-x-4"
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-16 h-16 object-cover rounded"
-                          />
-                          <div className="flex-1">
-                            <h4 className="font-medium">{item.name}</h4>
-                            <p className="text-sm text-gray-500">
-                              ${item.price.toFixed(2)}
-                            </p>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              onClick={() =>
-                                updateQuantity(item.id, Math.max(0, item.quantity - 1))
-                              }
-                            >
-                              <Minus className="h-4 w-4" />
-                            </Button>
-                            <span>{item.quantity}</span>
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity + 1)
-                              }
-                            >
-                              <Plus className="h-4 w-4" />
-                            </Button>
-                          </div>
+                  <div className="space-y-4 pb-4" style={{ maxHeight: '60vh', overflowY: 'auto' }}>
+                    {state.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between space-x-4"
+                      >
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded"
+                        />
+                        <div className="flex-1">
+                          <h4 className="font-medium">{item.name}</h4>
+                          <p className="text-sm text-gray-500">
+                            ${item.price.toFixed(2)}
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
                           <Button
-                            variant="ghost"
+                            variant="outline"
                             size="icon"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() =>
+                              updateQuantity(item.id, Math.max(0, item.quantity - 1))
+                            }
                           >
-                            <X className="h-4 w-4" />
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <span>{item.quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
+                          >
+                            <Plus className="h-4 w-4" />
                           </Button>
                         </div>
-                      ))}
-                    </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeFromCart(item.id)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
                   </div>
 
-                  <div className="pt-4 border-t mt-auto">
+                  <div className="pt-4 border-t sticky bottom-0 bg-white">
                     <div className="flex justify-between mb-4">
                       <span className="font-medium">Total:</span>
                       <span className="font-medium">

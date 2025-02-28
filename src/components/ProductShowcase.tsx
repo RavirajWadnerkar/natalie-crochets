@@ -10,20 +10,6 @@ const featuredProducts = [
     image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901",
     description: "Handmade with soft merino wool"
   },
-  {
-    id: "4",
-    name: "Flower Pot Holder",
-    price: 19.99,
-    image: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a",
-    description: "Decorative crochet pot holder"
-  },
-  {
-    id: "5",
-    name: "Mudkip Toy",
-    price: 42.99,
-    image: "https://images.unsplash.com/photo-1535759561784-5973ce7be8b9",
-    description: "Adorable crochet Mudkip plushie"
-  },
 ];
 
 const ProductShowcase = () => {
@@ -35,7 +21,7 @@ const ProductShowcase = () => {
         <h2 className="text-4xl font-script text-center text-primary-dark mb-12">
           Featured Collection
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 gap-8 max-w-2xl mx-auto">
           {featuredProducts.map((product) => (
             <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
               <img 
